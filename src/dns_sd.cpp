@@ -48,8 +48,7 @@ NAN_METHOD(buildException);
 void defineFunction(Local<Object> target, const char * name, Nan::FunctionCallback f);
 void addConstants(Local<Object> target);
 
-void
-init(Local<Object> target) {
+NAN_MODULE_INIT(init) {
     Nan::HandleScope scope;
 
     ServiceRef::Initialize( target );
@@ -319,4 +318,8 @@ NAN_METHOD(exportConstants) {
 
 } // end of namespace node_mdns
 
+#if NODE_MAJOR_VERSION >= 10
+NAN_MODULE_WORKER_ENABLED(dns_sd_bindings,node_mdns::init);
+#else
 NODE_MODULE(dns_sd_bindings,node_mdns::init);
+#endif
